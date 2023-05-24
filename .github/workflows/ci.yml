@@ -16,6 +16,7 @@ jobs:
       - name: Run pester tests
         shell: pwsh
         run: |
-          ./pstools/Invoke-Pester.ps1 -TestLocation './tests'
+          Get-ChildItem | select fullname
+          ./pstools/Invoke-Pester.ps1 -TestLocation './.tests/'
         
           

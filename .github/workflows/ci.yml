@@ -6,7 +6,7 @@ on:
 
 jobs:
   RunTests:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     steps:
       - name: Checkout psplaceholders
         uses: actions/checkout@v3.5.2

@@ -43,7 +43,7 @@
     # ProcessorArchitecture = ''
 
     # Modules that must be imported into the global environment prior to importing this module
-    RequiredModules      = @(@{ModuleName = 'AstExtensions'; ModuleVersion = '1.0.0.8'; })
+    RequiredModules      = @(@{ModuleName = 'AstExtensions'; RequiredVersion = '1.0.0.8'; })
 
     # Assemblies that must be loaded prior to importing this module
     # RequiredAssemblies = @()

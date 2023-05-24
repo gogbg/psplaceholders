@@ -1,11 +1,11 @@
-name: CI
+name: CD
 on: 
   release:
     types:
       - created
 
 jobs:
-  RunTests:
+  ToPSGallery:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout psplaceholders
@@ -26,6 +26,6 @@ jobs:
       - name: Publish module to psgallery
         shell: pwsh
         run: |
-          ./pstools/Publish-Module.ps1 -ModulePath './src/psplaceholders' -Repository 'PSGallery' -ApiKey ('${{ secrets.LARGE_SECRET_PASSPHRASE }}' | ConvertTo-SecureString -AsPlainText)
+          ./pstools/Publish-Module.ps1 -ModulePath './src/psplaceholders' -Repository 'PSGallery' -ApiKey ('${{ secrets.PSGALLERY_APIKEY }}' | ConvertTo-SecureString -AsPlainText)
         
           

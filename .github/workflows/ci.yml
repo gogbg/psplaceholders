@@ -21,6 +21,7 @@ jobs:
       - name: Run pester tests
         shell: pwsh
         run: |
+          Get-ChildItem -Recurse
           Invoke-Pester.ps1 -TestLocation 'repo/.tests'
         
           

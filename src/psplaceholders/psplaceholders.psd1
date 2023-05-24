@@ -16,16 +16,16 @@
     Author               = 'gogbg@outlook.com'
 
     # Company or vendor of this module
-    # CompanyName          = ''
+    CompanyName          = 'Unknown'
 
     # Copyright statement for this module
-    # Copyright            = ''
+    Copyright            = '(c) gogbg. All rights reserved.'
 
     # Description of the functionality provided by this module
     Description          = 'Find and replace placeholders in strings or files'
 
     # Minimum version of the PowerShell engine required by this module
-    PowerShellVersion    = '7.2'
+    # PowerShellVersion = ''
 
     # Name of the PowerShell host required by this module
     # PowerShellHostName = ''
@@ -61,16 +61,16 @@
     # NestedModules = @()
 
     # Functions to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no functions to export.
-    FunctionsToExport    = 'Get-PSPlaceholder', 'Update-PSPlaceholder'
+    FunctionsToExport    = @('Get-PSPlaceholder', 'Update-PSPlaceholder')
 
     # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.
-    CmdletsToExport      = '*'
+    CmdletsToExport      = @()
 
     # Variables to export from this module
     VariablesToExport    = '*'
 
     # Aliases to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no aliases to export.
-    AliasesToExport      = '*'
+    AliasesToExport      = @()
 
     # DSC resources to export from this module
     # DscResourcesToExport = @()
@@ -82,5 +82,42 @@
     # FileList = @()
 
     # Private data to pass to the module specified in RootModule/ModuleToProcess. This may also contain a PSData hashtable with additional module metadata used by PowerShell.
-    PrivateData          = @{}
+    PrivateData          = @{
+
+        PSData = @{
+
+            # Tags applied to this module. These help with module discovery in online galleries.
+            # Tags = @()
+
+            # A URL to the license for this module.
+            LicenseUri   = 'https://github.com/gogbg/psplaceholders/blob/main/LICENSE'
+
+            # A URL to the main website for this project.
+            # ProjectUri = 'https://github.com/gogbg/psplaceholders'
+
+            # A URL to an icon representing this module.
+            # IconUri = ''
+
+            # ReleaseNotes of this module
+            ReleaseNotes = 'Initial release'
+
+            # Prerelease string of this module
+            # Prerelease = ''
+
+            # Flag to indicate whether the module requires explicit user acceptance for install/update/save
+            # RequireLicenseAcceptance = $false
+
+            # External dependent modules of this module
+            # ExternalModuleDependencies = @()
+
+        } # End of PSData hashtable
+
+    } # End of PrivateData hashtable
+
+    # HelpInfo URI of this module
+    # HelpInfoURI = ''
+
+    # Default prefix for commands exported from this module. Override the default prefix using Import-Module -Prefix.
+    # DefaultCommandPrefix = ''
+
 }

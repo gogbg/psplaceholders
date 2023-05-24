@@ -6,7 +6,7 @@ on:
 
 jobs:
   ToPSGallery:
-    runs-on: windows-latest
+    runs-on: windows-2022
     steps:
       - name: Checkout psplaceholders
         uses: actions/checkout@v3.5.2

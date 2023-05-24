@@ -10,8 +10,6 @@ jobs:
     steps:
       - name: Checkout psplaceholders
         uses: actions/checkout@v3.5.2
-        with:
-          repository: gogbg/psplaceholders
       - name: Checkout pstools
         uses: actions/checkout@v3.5.2
         with:

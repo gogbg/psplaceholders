@@ -1,0 +1,24 @@
+name: CI
+on: 
+  pull_request:
+    branches:    
+    - main
+
+jobs:
+  RunTests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout psplaceholders
+        uses: actions/checkout@v3.5.2
+      - name: Checkout pstools
+        uses: actions/checkout@v3.5.2
+        with:
+          repository: gogbg/pstools
+          path: pstools
+      - name: Run pester tests
+        shell: pwsh
+        run: |
+          Get-ChildItem -recurse | select fullname
+          ./pstools/Invoke-Pester.ps1 -TestLocation './.tests/'
+        
+          

@@ -1,0 +1,26 @@
+name: CI
+on: 
+  pull_request:
+    branches:    
+    - main
+  
+jobs:
+  RunTests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout pstools
+        uses: actions/checkout@v3.5.2
+        with:
+          repository: gogbg/pstools
+          path: pstools
+      - name: Checkout this repo
+        uses: actions/checkout@v3.5.2
+        with:
+          repository: gogbg/psplaceholders
+          path: repo
+      - name: Run pester tests
+        shell: pwsh
+        run: |
+          Invoke-Pester.ps1 -TestLocation 'repo/.tests'
+        
+          

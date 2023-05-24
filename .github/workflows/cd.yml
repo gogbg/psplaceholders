@@ -1,0 +1,31 @@
+name: CI
+on: 
+  release:
+    types:
+      - created
+
+jobs:
+  RunTests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout psplaceholders
+        uses: actions/checkout@v3.5.2
+      - name: Checkout pstools
+        uses: actions/checkout@v3.5.2
+        with:
+          repository: gogbg/pstools
+          path: pstools
+      - name: Initialize ps env
+        shell: pwsh
+        run: |
+          ./pstools/Initialize-Env.ps1
+      - name: Install module dependencies
+        shell: pwsh
+        run: |
+          ./pstools/Install-ModuleDep.ps1 -ModulePath './src/psplaceholders'
+      - name: Publish module to psgallery
+        shell: pwsh
+        run: |
+          ./pstools/Publish-Module.ps1 -ModulePath './src/psplaceholders' -Repository 'PSGallery' -ApiKey ('${{ secrets.LARGE_SECRET_PASSPHRASE }}' | ConvertTo-SecureString -AsPlainText)
+        
+          

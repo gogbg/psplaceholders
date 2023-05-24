@@ -15,10 +15,17 @@ jobs:
         with:
           repository: gogbg/pstools
           path: pstools
+      - name: Initialize ps env
+        shell: pwsh
+        run: |
+          ./pstools/Initialize-Env.ps1
+      - name: Install module dependencies
+        shell: pwsh
+        run: |
+          ./pstools/Install-ModuleDep.ps1 -ModulePath './src/psplaceholders'
       - name: Run pester tests
         shell: pwsh
         run: |
-          Get-ChildItem -recurse | select fullname
-          ./pstools/Invoke-Pester.ps1 -TestLocation './.tests/'
+          ./pstools/Invoke-Pester.ps1 -TestPath './.tests/'
         
           

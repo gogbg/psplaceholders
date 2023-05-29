@@ -287,6 +287,23 @@ Describe '-String -Values -AllowEmptyPlaceholders' {
             Update-PSPlaceholder @commonParams | Should -Be 'Firstname  is: Neal, Lastname is: {{placeholder_lastname}}'
         }
     }
+    Context 'contains 1 executable placeholder and -Values contains value for it' {
+        BeforeAll {
+            $commonParams = @{
+                String                 = 'Firstname  is: {{& $placeholder_firstname}}'
+                Values                 = @{
+                    placeholder_firstname = 'Neal'
+                }
+                AllowEmptyPlaceholders = $true
+            }
+        }
+        It 'Should not throw' {
+            { Update-PSPlaceholder @commonParams } | Should -Not -Throw
+        }
+        It 'Should return modified string' {
+            Update-PSPlaceholder @commonParams | Should -Be 'Firstname  is: Neal'
+        }
+    }
 }
 
 Describe '-Path' {

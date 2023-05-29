@@ -10,7 +10,7 @@ class PlaceholderMatch
 class Placeholder
 {
     [string]$Tag
-    [System.Collections.Generic.List[String]]$Type = [System.Collections.Generic.List[String]]::new()
+    [string]$Type
     [string]$Name
     [string]$Value
     hidden [bool]$HasValue
@@ -177,16 +177,21 @@ function ConvertTo-Placeholder
     $result = [Placeholder]@{
         Tag = $Match.Tag
     }
-    $result.Type.Add($Match.Type)
+    $result.Type = $Match.Type
     #calculate Name
     switch ($Match)
     {
         { $_ -is [ExecutablePlaceholderMatch] }
         {
-            $result.Name = $_.ScriptBlock.ToString()
+            $result.Name = $_.ScriptBlock.ToString().Trim()
             break
         }
         { $_ -is [GenericPlaceholderMatch] }
+        {
+            $result.Name = $_.Name
+            break
+        }
+        { $_ -is [ExecutablePlaceholderInputMatch] }
         {
             $result.Name = $_.Name
             break
@@ -540,7 +545,7 @@ function Update-PSPlaceholder
 
     #Bind values to placeholders
     $unUsedPlacehodlerValues = @{} + $Values
-    foreach ($p in $placeholders.Where({ $_.Type -eq 'Generic' }))
+    foreach ($p in $placeholders.Where({ $_.Type -in 'Generic', 'ExecutionInput' }))
     {
         if ($Values.ContainsKey($p.Name))
         {

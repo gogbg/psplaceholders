@@ -40,7 +40,7 @@ Executable placeholders are defined as {{& `<powershell code block`>}}. When you
 **Example 1:**
 
 ```powershell
-Update-PSPlaceholder -String 'My colleagues are {{& [String]::Join(", ",$people}}' -Values @{people='John','Bill','Mark'}
+Update-PSPlaceholder -String 'My colleagues are {{& [String]::Join(", ",$people)}}' -Values @{people='John','Bill','Mark'}
 #should return
 'My colleagues are John, Bill, Mark'
 ```

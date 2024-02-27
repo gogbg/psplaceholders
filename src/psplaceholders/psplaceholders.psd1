@@ -4,7 +4,7 @@
     RootModule           = 'psplaceholders.psm1'
 
     # Version number of this module.
-    ModuleVersion        = '0.1.2'
+    ModuleVersion        = '0.1.3'
 
     # Supported PSEditions
     CompatiblePSEditions = 'Core'
@@ -99,7 +99,7 @@
             # IconUri = ''
 
             # ReleaseNotes of this module
-            ReleaseNotes = 'Fix false warning when executable placeholders are used'
+            ReleaseNotes = 'Fix unused placeholder warning'
 
             # Prerelease string of this module
             # Prerelease = ''

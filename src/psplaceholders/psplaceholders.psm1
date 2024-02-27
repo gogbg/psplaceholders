@@ -560,7 +560,7 @@ function Update-PSPlaceholder
     #warn if there are unused placeholder values
     if ($unUsedPlacehodlerValues.Count -gt 0)
     {
-        Write-Warning -Message "Unused placeholder values: $($Values.Keys -join ',')"
+        Write-Warning -Message "Unused placeholder values: $($unUsedPlacehodlerValues.Keys -join ',')"
     }
 
     #Replace placeholders

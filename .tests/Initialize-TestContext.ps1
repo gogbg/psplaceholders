@@ -1,21 +1,21 @@
 [CmdletBinding()]
 param
 (
-    [Parameter()]
-    $TempFolder
+  [Parameter()]
+  $TempFolder
 )
 
 $repoRoot = Split-Path -Path $PSScriptRoot -Parent
 $moduleFolder = Join-Path -Path $repoRoot -ChildPath src -AdditionalChildPath 'psplaceholders'
 if ($PSBoundParameters.ContainsKey('TempFolder'))
 {
-    $initialExamplesFolder = Join-Path -Path $repoRoot -ChildPath '.examples' -AdditionalChildPath '*'
-    Copy-Item -Path $initialExamplesFolder -Destination $TestDrive -Container -Recurse -Force -ErrorAction Stop
-    $examplesFolder = $TestDrive
+  $initialExamplesFolder = Join-Path -Path $repoRoot -ChildPath '.examples' -AdditionalChildPath '*'
+  Copy-Item -Path $initialExamplesFolder -Destination $TestDrive -Container -Recurse -Force -ErrorAction Stop
+  $examplesFolder = $TestDrive
 }
 else
 {
-    $examplesFolder = Join-Path -Path $repoRoot -ChildPath '.examples'
+  $examplesFolder = Join-Path -Path $repoRoot -ChildPath '.examples'
 }
 
 #files without placeholders in content
@@ -30,3 +30,6 @@ $filePathWithTwoPlaceholderInContent = Join-Path -Path $folderWithPlaceholdersIn
 #files with placeholders in name
 $folderWithPlaceholdersInName = Join-Path -Path $examplesFolder -ChildPath 'placeholdersInName'
 $fileWithOnePlaceholderInName = Join-Path -Path $folderWithPlaceholdersInName -ChildPath 'fileWithPlaceholdersInName-{{placeholder_person}}.json'
+
+#missing files
+$missingFilePath = Join-Path -Path $examplesFolder -ChildPath "$(New-Guid).txt"

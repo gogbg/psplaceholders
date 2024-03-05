@@ -204,6 +204,23 @@ Describe '-String -Values' {
       $war | Should -BeNullOrEmpty
     }
   }
+
+  Context 'contains 1 executable placeholder, -Values contains enumerable value for it' {
+    BeforeAll {
+      $commonParams = @{
+        String = 'These are: {{& $placeholder_names}}'
+        Values = @{
+          placeholder_names = @('Neal', 'Joe', 'Kevin')
+        }
+      }
+    }
+    It 'Should not throw' {
+      { Update-PSPlaceholder @commonParams } | Should -Not -Throw
+    }
+    It 'Should return modified string' {
+      Update-PSPlaceholder @commonParams | Should -Be 'These are: System.Collections.ObjectModel.Collection`1[System.Management.Automation.PSObject]'
+    }
+  }
 }
 
 Describe '-String -Values -AllowEmptyPlaceholders' {
@@ -302,6 +319,166 @@ Describe '-String -Values -AllowEmptyPlaceholders' {
     }
     It 'Should return modified string' {
       Update-PSPlaceholder @commonParams | Should -Be 'Firstname  is: Neal'
+    }
+  }
+  Context 'contains 2 executable placeholder and -Values contains value for it' {
+    BeforeAll {
+      $commonParams = @{
+        String                 = 'Firstname  is: {{& $placeholder_firstname}}, Lastname is: {{& $placeholder_lastname}}'
+        Values                 = @{
+          placeholder_firstname = 'Neal'
+          placeholder_lastname  = 'Armstrong'
+        }
+        AllowEmptyPlaceholders = $true
+      }
+    }
+    It 'Should not throw' {
+      { Update-PSPlaceholder @commonParams } | Should -Not -Throw
+    }
+    It 'Should return modified string' {
+      Update-PSPlaceholder @commonParams | Should -Be 'Firstname  is: Neal, Lastname is: Armstrong'
+    }
+  }
+}
+
+Describe '-String -Values -AdaptTo Json' {
+  BeforeAll {
+    $module = Import-Module -Name $moduleFolder -PassThru -Force -ErrorAction Stop
+  }
+  AfterAll {
+    Remove-Module -Name 'psplaceholders' -Force -ErrorAction Stop
+  }
+  BeforeEach {
+    . "$PSScriptRoot/Initialize-TestContext.ps1" -TempFolder $TestDrive
+  }
+
+  Context 'contains no placeholders and values in empty' {
+    BeforeAll {
+      $commonParams = @{
+        String  = 'There are no placeholders here'
+        Values  = @{}
+        AdaptTo = 'Json'
+      }
+    }
+    It 'Should not throw' {
+      { Update-PSPlaceholder @commonParams } | Should -Not -Throw
+    }
+    It 'Should return the same string' {
+      Update-PSPlaceholder @commonParams | Should -Be $commonParams['String']
+    }
+  }
+
+  Context 'contains no placeholders and -values is not empty' {
+    BeforeAll {
+      $commonParams = @{
+        String  = 'There are no placeholders here'
+        Values  = @{
+          placeholder_bogus = 'bogus'
+        }
+        AdaptTo = 'Json'
+      }
+    }
+    It 'Should not throw' {
+      { Update-PSPlaceholder @commonParams -WarningAction SilentlyContinue } | Should -Not -Throw
+    }
+    It 'Should return the same string' {
+      Update-PSPlaceholder @commonParams -WarningAction SilentlyContinue | Should -Be $commonParams['String']
+    }
+    It 'Should return warning about unused placeholder value' {
+      Update-PSPlaceholder @commonParams -WarningAction SilentlyContinue -WarningVariable war
+      $war | Should -Be 'Unused placeholder values: placeholder_bogus'
+    }
+  }
+
+  Context 'contains 1 placeholder and -Values contains value for it' {
+    BeforeAll {
+      $commonParams = @{
+        String  = 'Firstname  is: {{placeholder_firstname}}'
+        Values  = @{
+          placeholder_firstname = 'Neal'
+        }
+        AdaptTo = 'Json'
+      }
+    }
+    It 'Should not throw' {
+      { Update-PSPlaceholder @commonParams } | Should -Not -Throw
+    }
+    It 'Should return modified string' {
+      Update-PSPlaceholder @commonParams | Should -Be 'Firstname  is: Neal'
+    }
+  }
+
+  Context 'contains 1 placeholder and -Values does not contains value for it' {
+    BeforeAll {
+      $commonParams = @{
+        String  = 'Firstname  is: {{placeholder_firstname}}'
+        Values  = @{
+          placeholder_bogus = 'bogus'
+        }
+        AdaptTo = 'Json'
+      }
+    }
+    It 'Should throw' {
+      { Update-PSPlaceholder @commonParams -WarningAction SilentlyContinue } | Should -Throw -ExpectedMessage 'Unspecified placeholders: placeholder_firstname. Use -AllowEmptyPlaceholders if you want to replace only part of the placeholders'
+    }
+  }
+
+  Context 'contains 2 placeholder and -Values contains value for them' {
+    BeforeAll {
+      $commonParams = @{
+        String  = 'Firstname  is: {{placeholder_firstname}}, Lastname is: {{placeholder_lastname}}'
+        Values  = @{
+          placeholder_firstname = 'Neal'
+          placeholder_lastname  = 'Armstrong'
+        }
+        AdaptTo = 'Json'
+      }
+    }
+    It 'Should not throw' {
+      { Update-PSPlaceholder @commonParams } | Should -Not -Throw
+    }
+    It 'Should return modified string' {
+      Update-PSPlaceholder @commonParams | Should -Be 'Firstname  is: Neal, Lastname is: Armstrong'
+    }
+    It 'Should not return warning' {
+      Update-PSPlaceholder @commonParams -WarningVariable war
+      $war | Should -BeNullOrEmpty
+    }
+  }
+
+  Context 'contains 1 executable placeholder, -Values contains enumerable value for it' {
+    BeforeAll {
+      $commonParams = @{
+        String  = 'These are: {{& $placeholder_firstname}}'
+        Values  = @{
+          placeholder_firstname = @('Neal', 'Joe', 'Kevin')
+        }
+        AdaptTo = 'Json'
+      }
+    }
+    It 'Should not throw' {
+      { Update-PSPlaceholder @commonParams } | Should -Not -Throw
+    }
+    It 'Should return modified string' {
+      Update-PSPlaceholder @commonParams | Should -Be 'These are: System.Collections.ObjectModel.Collection`1[System.Management.Automation.PSObject]'
+    }
+  }
+
+  Context 'contains 1 placeholder in json document and -Values contains value for it' {
+    BeforeAll {
+      $commonParams = @{
+        String  = '{"Names": "{{placeholder_names}}"}'
+        Values  = @{
+          placeholder_names = @('Neal', 'Joe', 'Kevin')
+        }
+        AdaptTo = 'Json'
+      }
+    }
+    It 'Should not throw' {
+      { Update-PSPlaceholder @commonParams } | Should -Not -Throw
+    }
+    It 'Should return modified string' {
+      Update-PSPlaceholder @commonParams | Should -Be '{"Names": ["Neal","Joe","Kevin"]}'
     }
   }
 }
